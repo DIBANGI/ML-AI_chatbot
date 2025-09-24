@@ -1,0 +1,197 @@
+/* General Layout */
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #FAF9F6; /* soft cream background */
+    margin: 0;  
+    padding: 10px;
+}
+
+
+
+.chat-container {
+    width: 400px;
+    height: 600px;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    overflow: hidden;
+    border: 1px solid #e9dcc9; /* subtle luxury border */
+}
+
+/* Header */
+.chat-header {
+    background: linear-gradient(135deg, #f5e6d3, #e6cfc2, #e0bfb8); /* cream → rose gold gradient */
+    color: #3b2f2f;
+    padding: 15px;
+    font-family: 'Playfair Display', serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e9dcc9;
+}
+
+.chat-header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.chat-header p {
+    margin: 0;
+    font-size: 12px;
+    color: #7a6a63;
+}
+
+.logo-wrapper {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #d4af37; /* gold border */
+}
+
+.vasuki-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+/* Messages Area */
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: #fffdfb;
+}
+
+/* Message Bubble */
+.message {
+    display: flex;
+    align-items: flex-end;
+    max-width: 80%;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-weight: bold;
+    color: #fff;
+    flex-shrink: 0;
+    border: 2px solid #e6cfc2; /* rose gold border */
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.text {
+    padding: 12px 18px;
+    border-radius: 16px;
+    line-height: 1.5;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    font-size: 0.95rem;
+}
+
+/* Bot message */
+.bot-message {
+    align-self: flex-start;
+}
+.bot-message .text {
+    background-color: #f9f6f2; /* cream */
+    color: #3a2d2d;
+    border-bottom-left-radius: 6px;
+}
+
+/* User message */
+.user-message {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+.user-message .avatar {
+    background: linear-gradient(135deg, #d4af37, #e6cfc2); /* gold to rose gold */
+    margin-left: 10px;
+    color: #fff;
+}
+.user-message .text {
+    background: linear-gradient(135deg, #d4af37, #e0bfb8);
+    color: #fff;
+    border-bottom-right-radius: 6px;
+}
+
+/* Footer */
+.chat-footer {
+    padding: 12px;
+    background: #fdfaf6;
+    border-top: 1px solid #e9dcc9;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#message-input {
+    flex: 1;
+    border: 1px solid #e6cfc2;
+    border-radius: 9999px;
+    padding: 12px 16px;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+    color: #3a2d2d;
+}
+
+/* Send button */
+#send-button {
+    background: linear-gradient(135deg, #d4af37, #e6cfc2);
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#send-button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+}
+
+.send-icon {
+    width: 20px;
+    height: 20px;
+    color: #fff;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+    #chat-container {
+        height: 90vh;
+        border-radius: 0;
+    }
+}

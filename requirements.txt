@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pandas
+chromadb
+langchain
+langchain-community
+langchain-core
+sentence-transformers
+groq
+langchain-groq
+pyngrok
+langchain-huggingface
+requests==2.32.4
+nest_asyncio

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VASUKI Jewelry - AI Assistant</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Source+Sans+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+
+    <div id="chat-container" class="chat-container">
+
+        <!-- Header Section -->
+        <header class="chat-header">
+            <div class="logo-wrapper">
+                <img src="/static/images/vasuki-logo.jpg" alt="Vasuki Logo" class="vasuki-logo">
+            </div>
+            <div>
+                <h1>VASUKI AI Assistant</h1>
+                <p>Your personal jewelry consultant</p>
+            </div>
+        </header>
+
+        <!-- Chat Messages Area -->
+        <main id="chat-messages" class="chat-messages">
+            <div class="message bot-message">
+                <div class="avatar">
+                    <img src="/static/images/vasuki-logo.jpg" alt="Vasuki Logo">
+                </div>
+                <div class="text">
+                    Hello! I'm the VASUKI AI Assistant. How can I help you find the perfect piece of jewelry today?
+                </div>
+            </div>
+        </main>
+
+        <!-- Text Input and Send Button -->
+        <footer class="chat-footer">
+            <div class="input-wrapper">
+                <input type="text" id="message-input" placeholder="Ask about products, policies, or more...">
+                <button id="send-button">
+                    <svg class="send-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Chat logic (unchanged) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const chatMessages = document.getElementById("chat-messages");
+            const messageInput = document.getElementById("message-input");
+            const sendButton = document.getElementById("send-button");
+
+            let conversationId = localStorage.getItem("vasuki_conversation_id");
+            let ws;
+
+            function connectWebSocket() {
+                const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+                const wsUrl = `${wsProtocol}//${window.location.host}/ws`;
+
+                ws = new WebSocket(wsUrl);
+
+                ws.onopen = () => console.log("WebSocket connection established.");
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    if (data.conversation_id) {
+                        conversationId = data.conversation_id;
+                        localStorage.setItem("vasuki_conversation_id", conversationId);
+                    }
+                    addMessage(data.response, "bot");
+                };
+                ws.onclose = () => setTimeout(connectWebSocket, 3000);
+                ws.onerror = (error) => console.error("WebSocket error:", error);
+            }
+
+            function addMessage(text, sender) {
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message", `${sender}-message`);
+
+                const avatar = document.createElement("div");
+                avatar.classList.add("avatar");
+
+                if (sender === "bot") {
+                    const img = document.createElement("img");
+                    img.src = "/static/images/vasuki-logo.jpg";
+                    img.alt = "Vasuki Logo";
+                    avatar.appendChild(img);
+                } else {
+                    avatar.textContent = "You";
+                }
+
+                const textElement = document.createElement("div");
+                textElement.classList.add("text");
+                textElement.innerText = text;
+
+                messageElement.appendChild(avatar);
+                messageElement.appendChild(textElement);
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (messageText === "" || !ws || ws.readyState !== WebSocket.OPEN) return;
+                addMessage(messageText, "user");
+                ws.send(JSON.stringify({ query: messageText, conversation_id: conversationId }));
+                messageInput.value = "";
+            }
+
+            sendButton.addEventListener("click", sendMessage);
+            messageInput.addEventListener("keypress", (e) => e.key === "Enter" && sendMessage());
+
+            connectWebSocket();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+# Groq API Key
+GROQ_API_KEY=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
+
+# Application Settings
+DEBUG=True
+PORT=8001
